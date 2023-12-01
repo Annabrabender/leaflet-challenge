@@ -3,7 +3,7 @@
 //What we want to do 
   //Import the dataset
   //Create a map that plots all the earthquakes from dataset based on their longitude and latitude 
-  //Data markers need to reflect the magnitude of the earthquake by their size (higher magnitude should be larger)
+  //Data markers need to reflect the magnitude of the earthquake by their size (higher magnitude should be larger (this is radius))
   //Data markers need to reflect the depth (3rd cooridnate) of the earthquake by their color (greater depth should be darker)
   //Need to include pop ups that provide additional info about the earthquake
   //Create a legend that will provide context for map data 
@@ -30,7 +30,7 @@ function createFeatures(earthquakeData) {
     pointToLayer: function (feature, latlng) {
       return new L.circle(latlng,
         {radius: getRadius(feature.properties.mag),
-        fillColor: getColor(feature.properties.mag),
+        fillColor: getColor(feature.properties.geometry[2]),
         fillOpacity: .6,
         color: "#000",
         stroke: true,
