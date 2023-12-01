@@ -10,12 +10,17 @@
 
 // Store the URL for the earthquake data
 var Url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+
+
 // Perform a GET request to the query URL using D3
 d3.json(Url).then(function(data) {
     createFeatures(data.features);
 }).catch(function(error) {
     console.log("Error loading data: " + error);
 });
+
+
+
 // Function to create features (earthquake markers)
 function createFeatures(earthquakeData) {
   var earthquakes = L.geoJSON(earthquakeData, {
@@ -34,10 +39,12 @@ function createFeatures(earthquakeData) {
     })
   }
   });
-  // Sending our earthquakes layer to the createMap function
+  // Sending earthquakes layer to the createMap function
   createMap(earthquakes);
 }
   
+
+//Create the map layers 
 function createMap(earthquakes) {
   // Create the tile layer that will be the background of our map.
   let streetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -54,25 +61,53 @@ function createMap(earthquakes) {
   // Create the map object with options.
   let map = L.map("map", {
     center: [37.09, -95.71],
-    zoom: 3,
+    zoom: 5,
     layers: [streetmap, earthquakes]
   });
   // Create a layer control, and pass it baseMaps and overlayMaps. Add the layer control to the map.
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(map);
-}
+
  
+
+  //Need to make legend // example is shown in bottomleft therefore I will be placing mine in bottom left
+  var legend = L.control({position: 'bottomleft'});
+
+      legend.onAdd = function(map){
+        var div = L.DomUtil.create('div'),
+          depths = [0, 1, 10, 30, 50, 70],
+          labels = [];
+
+    // loop through depth groups and generate a label with a colored square for each group
+      for (var i = 0; i < depths.length; i++) {
+          div.innerHTML +=
+              '<i style="background:' + getColor(depths[i] + 1) + '"></i> ' +
+              depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
+      }
+      return div;
+    };
+
+  legend.addTo(map);
+
+}
+
 // Function to determine the color of the marker based on earthquake depth
 function getColor(depth) {
-  return depth > 5 ? "#a54500":
-         depth > 4 ? "#cc5500":
-         depth > 3 ? "#ff6f08":
-         depth > 2 ? "#ff9143":
-         depth > 1 ? "#ffb37e":
-                     "#ffcca5";
+  return depth > 70 ? "#2388230":
+         depth > 50 ? "#6fa06f":
+         depth > 30 ? "#98bf98":
+         depth > 10 ? "#c2e699":
+         depth > 1 ? "#e5f5e0":
+                     "#f7fcf5";
 }
 // Function to determine the radius of the marker based on earthquake magnitude
 function getRadius(magnitude) {
   return magnitude * 25000;
 }
+
+
+
+
+
+   
