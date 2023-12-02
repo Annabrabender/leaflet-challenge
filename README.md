@@ -8,3 +8,5 @@ In this challenge, I was tasked with developing a way to visualize USGS data tha
 
 
 In the static folder you will find a js file with my Javascript code and a CSS file. There is also an html file to run the visualization
+
+Link to my live git hub page: https://annabrabender.github.io/leaflet-challenge/
