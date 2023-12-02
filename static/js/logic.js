@@ -36,8 +36,8 @@ function createFeatures(earthquakeData) {
         color: "#000",
         stroke: true,
         weight: .8
-    })
-  }
+      })
+    }
   });
   // Sending earthquakes layer to the createMap function
   createMap(earthquakes);
@@ -58,39 +58,36 @@ function createMap(earthquakes) {
   let overlayMaps = {
     "Earthquakes": earthquakes
   };
+  
   // Create the map object with options.
   let map = L.map("map", {
     center: [37.09, -95.71],
     zoom: 5,
     layers: [streetmap, earthquakes]
   });
-  // Create a layer control, and pass it baseMaps and overlayMaps. Add the layer control to the map.
-  L.control.layers(baseMaps, overlayMaps, {
-    collapsed: false
-  }).addTo(map);
 
- 
+  // Need to make legend /
+  var legend = L.control({position: 'bottomright'});
 
-  //Need to make legend // example is shown in bottomleft therefore I will be placing mine in bottom left
-  var legend = L.control({position: 'bottomleft'});
-
-      legend.onAdd = function(map){
-        var div = L.DomUtil.create('div'),
-          depths = [0, 1, 10, 30, 50, 70],
-          labels = [];
+  legend.onAdd = function() {
+    var div = L.DomUtil.create('div', "info legend"),
+        depths = [0, 1, 10, 30, 50, 70],
+        labels = [];
 
     // loop through depth groups and generate a label with a colored square for each group
-      for (var i = 0; i < depths.length; i++) {
-          div.innerHTML +=
-              '<i style="background:' + getColor(depths[i] + 1) + '"></i> ' +
-              depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
-      }
-      return div;
-    };
+    for (var i = 0; i < depths.length; i++) {
+      div.innerHTML +=
+          '<i style="background:' + getColor(depths[i] + 1) + '"></i> ' +
+          depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
+    }
+    return div;
+  };
+
 
   legend.addTo(map);
 
 }
+
 
 // Function to determine the color of the marker based on earthquake depth
 function getColor(depth) {
@@ -109,5 +106,3 @@ function getRadius(magnitude) {
 
 
 
-
-   
